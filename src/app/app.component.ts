@@ -4,6 +4,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { HomePage } from '../pages/home/home';
+import { AlertController } from 'ionic-angular'
 
 @Component({
   templateUrl: 'app.html'
@@ -15,7 +16,18 @@ export class MyApp {
 
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+  currentUser: any;
+
+  constructor(public platform: Platform,
+     public statusBar: StatusBar, 
+     public splashScreen: SplashScreen, 
+     private _tokenService: Angular2TokenService
+    ) {
+
+      this._tokenService.init({
+        apiBase: 'https://https://bm-cooper-api.herokuapp.com/api/v1'
+      });
+
     this.initializeApp();
 
     // used for an example of ngFor and navigation
@@ -38,5 +50,54 @@ export class MyApp {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
     this.nav.setRoot(page.component);
+  }
+
+  loginPopUp() {
+    console.log('popup');
+    let confirm = this.alertCtrl.create({
+      title: 'Login',
+      inputs: [
+        {
+          name: 'email',
+          placeholder: 'email'
+        },
+        {
+          name: 'password',
+          placeholder: 'password',
+          type: 'password'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Login',
+          handler: data => {
+            this.login(data);
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
+
+  login(credentials) {
+    this.tokenService
+      .signIn(credentials)
+      .subscribe(
+      res => (this.currentUser = res.json().data),
+      err => console.error('error')
+      );
+  }
+
+  logout() {
+    this.tokenService
+      .signOut()
+      .subscribe(res => console.log(res), err => console.error('error'));
+    this.currentUser = undefined;
   }
 }
