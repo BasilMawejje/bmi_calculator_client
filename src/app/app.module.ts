@@ -1,6 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { HttpModule } from '@angular/http';
+import { RouterModule } from '@angular/router';
+import { Angular2TokenService } from 'angular2-token';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -9,7 +12,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { PersonProvider } from '../providers/person/person';
 import { CooperProvider } from '../providers/cooper/cooper';
-import { Angular2TokenService } from 'angular2-token';
+import { PerfomanceDataProvider } from '../providers/perfomance-data/perfomance-data';
 
 @NgModule({
   declarations: [
@@ -28,12 +31,13 @@ import { Angular2TokenService } from 'angular2-token';
     HomePage
   ],
   providers: [
-    Angular2TokenService,
     StatusBar,
+    Angular2TokenService,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     PersonProvider,
-    CooperProvider
+    CooperProvider,
+    PerfomanceDataProvider
   ]
 })
 export class AppModule {}

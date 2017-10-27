@@ -1,10 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { Nav, Platform, AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { HomePage } from '../pages/home/home';
-import { AlertController } from 'ionic-angular'
+import { Angular2TokenService } from 'angular2-token';
+
 
 @Component({
   templateUrl: 'app.html'
@@ -21,9 +22,10 @@ export class MyApp {
   constructor(public platform: Platform,
      public statusBar: StatusBar, 
      public splashScreen: SplashScreen, 
+     public alertCtrl: AlertController,
      private _tokenService: Angular2TokenService
     ) {
-
+      
       this._tokenService.init({
         apiBase: 'https://https://bm-cooper-api.herokuapp.com/api/v1'
       });
@@ -86,7 +88,7 @@ export class MyApp {
   }
 
   login(credentials) {
-    this.tokenService
+    this._tokenService
       .signIn(credentials)
       .subscribe(
       res => (this.currentUser = res.json().data),
@@ -95,7 +97,7 @@ export class MyApp {
   }
 
   logout() {
-    this.tokenService
+    this._tokenService
       .signOut()
       .subscribe(res => console.log(res), err => console.error('error'));
     this.currentUser = undefined;
