@@ -23,7 +23,7 @@ export class MyApp {
      public statusBar: StatusBar, 
      public splashScreen: SplashScreen, 
      public alertCtrl: AlertController,
-     private _tokenService: Angular2TokenService
+     public _tokenService: Angular2TokenService
     ) {
       
       this._tokenService.init({
